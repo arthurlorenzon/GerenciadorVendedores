@@ -45,3 +45,25 @@ class Salesperson:
             return True
         except ValueError:
             return False
+
+
+class SalespersonManagement:
+    def __init__(self):
+        self.salespersons = {}
+
+    def add_salesperson(self, salesperson):
+        self.salespersons[salesperson.cpf] = salesperson
+
+    def get_salesperson(self, cpf):
+        return self.salespersons.get(cpf)
+
+    def update_salesperson(self, cpf, **kwargs):
+        if cpf in self.salespersons:
+            salesperson = self.salespersons[cpf]
+            for key, value in kwargs.items():
+                if hasattr(salesperson, key):
+                    setattr(salesperson, key, value)
+
+    def delete_salesperson(self, cpf):
+        if cpf in self.salespersons:
+            del self.salespersons[cpf]
