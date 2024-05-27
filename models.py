@@ -146,3 +146,35 @@ class SalespersonManagement:
             df_sales.to_excel(writer, index=False, sheet_name='Vendas')
             df_payments.to_excel(writer, index=False,
                                  sheet_name='Pagamentos')
+
+    def calculate_statistics(self):
+        sale_statistics = []
+
+        for salesperson in self.salespersons.values():
+            for sale in salesperson.sales:
+                sale_statistics.append({
+                    'Nome do Vendedor': salesperson.name,
+                    'Estado': salesperson.state,
+                    'Valor': sale['valor'],
+                    'Canal': sale['canal']
+                })
+
+        df_sales = pd.DataFrame(sale_statistics)
+
+        volume_per_channel = df_sales.groupby(
+            'Canal')['Valor'].sum().reset_index()
+        average_per_channel = df_sales.groupby(['Canal', 'Nome do Vendedor'])[
+            'Valor'].mean().reset_index()
+        volume_per_state = df_sales.groupby(
+            'Estado')['Valor'].sum().reset_index()
+        average_per_state = df_sales.groupby(['Estado', 'Nome do Vendedor'])[
+            'Valor'].mean().reset_index()
+
+        print("Volume de vendas por canal:")
+        print(volume_per_channel)
+        print("\nMédia de vendas por canal:")
+        print(average_per_channel)
+        print("\nVolume de vendas por estado:")
+        print(volume_per_state)
+        print("\nMédia de vendas por estado:")
+        print(average_per_state)
