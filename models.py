@@ -46,6 +46,21 @@ class Salesperson:
         except ValueError:
             return False
 
+    def add_sale(self, value, channel):
+        comission = self.calculate_comission(value, channel)
+        sale = {'valor': value, 'canal': channel, 'comissao': comission}
+        self.sales.append(sale)
+
+    def calculate_comission(self, value, channel):
+        standard_comission = 0.1 * value
+
+        if channel == 'Online':
+            comission = standard_comission * 0.8
+        else:
+            comission = standard_comission
+
+        return comission
+
 
 class SalespersonManagement:
     def __init__(self):
